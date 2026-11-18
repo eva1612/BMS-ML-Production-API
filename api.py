@@ -20,6 +20,10 @@ class BatteryInput(BaseModel):
     converter_command_pct: float = Field(..., ge=0, le=100)
     soc: float = Field(..., ge=0, le=100)
     soh: float = Field(..., ge=0, le=100)
+class BatteryOutput(BaseModel):
+    temperature: float
+    soc: float
+    predicted_cell_voltage: float
 
 
 @app.get("/")
@@ -29,7 +33,7 @@ def home():
     }
 
 
-@app.post("/predict")
+@app.post("/predict", response_model=BatteryOutput)
 def predict(data: BatteryInput):
 
     features = [[
